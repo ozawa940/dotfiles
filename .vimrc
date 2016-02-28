@@ -105,7 +105,7 @@ NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 
 NeoBundle 'itchyny/lightline.vim'
-NeoBundle 'lexima.vim'
+NeoBundle 'cohama/lexima.vim'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'thinca/vim-quickrun'
 
