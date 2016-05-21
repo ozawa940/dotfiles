@@ -26,7 +26,6 @@ set cmdheight=2
 highlight LineNr ctermfg=darkyellow
 set shiftwidth=4
 
-
 "-------------------
 "apperance-setting
 "------------------
@@ -46,6 +45,7 @@ set smartindent
 set incsearch
 set autoindent
 set smarttab
+set background=dark
 
 "----------------------------
 "apperance-particularly
@@ -84,39 +84,28 @@ endif
 "----------------
 "NeoBundle
 "----------------
-
-if has('vim_starting')
-        set nocompatible
-        " neobundle をインストールしていない場合は自動インストール
-        if !isdirectory(expand("~/.vims/bundle/neobundle.vim/"))
-        echo "install neobundle..."
-        " vim からコマンド呼び出しているだけ neobundle.vim のクローン
-        :call system("git clone git://github.com/Shougo/neobundle.vim ~/.vims/bundle/neobundle.vim")
-        endif
-        " runtimepath の追加は必須
-        set runtimepath+=~/.vims/bundle/neobundle.vim/
+if &compatible
+    set nocompatible
 endif
-call neobundle#begin(expand('~/.vims/bundle'))
-let g:neobundle_default_git_protocol='https'
+set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
+
+call dein#begin(expand('~/.vim/dein'))
 
 
-NeoBundle "Shougo/neocomplete.vim"
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
+call dein#add('Shougo/neocomplete.vim')
+call dein#add('Shougo/neosnippet')
+call dein#add('Shougo/neosnippet-snippets')
 
-NeoBundle 'itchyny/lightline.vim'
-NeoBundle 'cohama/lexima.vim'
-NeoBundle 'tomasr/molokai'
-NeoBundle 'thinca/vim-quickrun'
+call dein#add('itchyny/lightline.vim')
+call dein#add('cohama/lexima.vim')
+call dein#add('tomasr/molokai')
+call dein#add('thinca/vim-quickrun')
 
 
 "Ruby Plugin
-NeoBundle 'bronson/vim-trailing-whitespace'
+call dein#add('bronson/vim-trailing-whitespace')
 
-NeoBundleCheck
-
-call neobundle#end()
-
+call dein#end()
 
 
 colorscheme molokai
@@ -136,7 +125,15 @@ if !exists('g:neocomplete#keyword_patterns')
     let g:neocomplete#keyword_patterns = {}
 endif
 let g:neocomplete#keyword_patterns._ = '\h\w*'
+
+
+
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+
 
 "================
 "Key
