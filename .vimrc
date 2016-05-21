@@ -82,7 +82,7 @@ endif
 
 
 "----------------
-"NeoBundle
+"dein
 "----------------
 if &compatible
     set nocompatible
