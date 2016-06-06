@@ -113,7 +113,8 @@ call dein#add('Shougo/vimproc.vim')
 call dein#add('Shougo/neocomplete.vim')
 call dein#add('Shougo/neosnippet')
 call dein#add('Shougo/neosnippet-snippets')
-
+call dein#add('Shougo/unite.vim')
+call dein#add('Shougo/neomru.vim')
 
 call dein#add('itchyny/lightline.vim')
 "neocomplete and lexima are conflict.
@@ -126,6 +127,12 @@ call dein#add('tomtom/tcomment_vim')
 "call dein#add('bronson/vim-trailing-whitespace')
 
 call dein#end()
+
+if dein#check_install()
+    call dein#install()
+endif
+
+
 filetype plugin indent on
 colorscheme molokai
 syntax on
@@ -171,6 +178,8 @@ let g:quickrun_config = {
 "================
 "Key
 "================
+
+
 
 
 
