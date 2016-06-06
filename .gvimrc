@@ -1,4 +1,4 @@
 "Display
 
-set guifont=Monospace\ 18
+set guifont=DejaVu\ Sans\ Mono\ 18
 

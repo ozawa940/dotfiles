@@ -46,7 +46,8 @@ set incsearch
 set autoindent
 set smarttab
 set background=dark
-
+set clipboard=unnamed,autoselect
+"filetype plugin indent on 
 "----------------------------
 "apperance-particularly
 "----------------------------
@@ -83,33 +84,53 @@ endif
 
 "----------------
 "dein
+"dein use copy command of rsync.
 "----------------
 if &compatible
     set nocompatible
 endif
-set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
-
-call dein#begin(expand('~/.vim/dein'))
 
 
+
+" プラグインが実際にインストールされるディレクトリ
+let s:dein_dir = expand('~/.cache/dein')
+" dein.vim 本体
+let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
+
+" dein.vim がなければ github から落としてくる
+if &runtimepath !~# '/dein.vim'
+  if !isdirectory(s:dein_repo_dir)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+  endif
+  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
+endif
+
+
+call dein#begin(expand(s:dein_dir))
+"you need to make vimproc.
+call dein#add('Shougo/vimproc.vim')
+"noecomplete is lua/dyn, vim version and machine installed lua
 call dein#add('Shougo/neocomplete.vim')
 call dein#add('Shougo/neosnippet')
 call dein#add('Shougo/neosnippet-snippets')
 
+
 call dein#add('itchyny/lightline.vim')
-call dein#add('cohama/lexima.vim')
+"neocomplete and lexima are conflict.
+"call dein#add('cohama/lexima.vim')
+call dein#add('kana/vim-smartinput')
 call dein#add('tomasr/molokai')
 call dein#add('thinca/vim-quickrun')
-
-
+call dein#add('tomtom/tcomment_vim')
 "Ruby Plugin
-call dein#add('bronson/vim-trailing-whitespace')
+"call dein#add('bronson/vim-trailing-whitespace')
 
 call dein#end()
-
-
+filetype plugin indent on
 colorscheme molokai
 syntax on
+
+
 "----------------
 "Plugin-setting
 "---------------
@@ -126,14 +147,26 @@ if !exists('g:neocomplete#keyword_patterns')
 endif
 let g:neocomplete#keyword_patterns._ = '\h\w*'
 
-
-
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
   return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
 
+"quick-run
+let g:quickrun_config = {
+\   "_" : {
+\        "hoOK/time/enable" : 1,
+\       "outputter/buffer/split" : ":botright",
+\       "hook/output_encode/enable" : 1,
+\       "hook/output_encode/encoding" : "utf-8",
+\   },
+\   "g++14" : {
+\       "command" : "g++",
+\       "exec" : ['%c %o %s -o %s:p:r', '%s:p:r %a'],
+\       "cmdopt" : "-std=c++14 -Wall",
+\   },
+\}
 
 "================
 "Key
