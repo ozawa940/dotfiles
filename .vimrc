@@ -182,7 +182,7 @@ let g:quickrun_config = {
 
 
 "Unite.vim
-
+let g:unite_enable_start_insert = 1
 "grep検索
 nnoremap <silent> ,g  : <C-u>Unite grep: -buffer-name=search-buffer<CR>
 "カーソル位置の単語をgrep検索
@@ -220,12 +220,17 @@ au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vspli
 
 
 
+
+
 "================
 "Key
 "================
 
-
-
+"挿入モード時のキー異同
+inoremap <C-h> <Left>
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-l> <Right>
 
 
 
