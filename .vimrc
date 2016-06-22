@@ -108,13 +108,14 @@ endif
 
 call dein#begin(expand(s:dein_dir))
 "you need to make vimproc.
-call dein#add('Shougo/vimproc.vim')
+call dein#add('Shougo/vimproc.vim', {'build': 'make'})
 "noecomplete is lua/dyn, vim version and machine installed lua
 call dein#add('Shougo/neocomplete.vim')
 call dein#add('Shougo/neosnippet')
 call dein#add('Shougo/neosnippet-snippets')
 call dein#add('Shougo/unite.vim')
 call dein#add('Shougo/neomru.vim')
+call dein#add('Shougo/vimshell.vim')
 
 call dein#add('itchyny/lightline.vim')
 "neocomplete and lexima are conflict.
@@ -131,7 +132,6 @@ call dein#end()
 if dein#check_install()
     call dein#install()
 endif
-
 
 filetype plugin indent on
 colorscheme molokai
@@ -163,10 +163,13 @@ endfunction
 "quick-run
 let g:quickrun_config = {
 \   "_" : {
-\        "hoOK/time/enable" : 1,
+\       "hoOK/time/enable" : 1,
 \       "outputter/buffer/split" : ":botright",
 \       "hook/output_encode/enable" : 1,
 \       "hook/output_encode/encoding" : "utf-8",
+\       "runner" : "vimproc",
+\       "runner/vimproc/updatetime" : 10,
+\       "outputter/buffer/clone_on_empty" : 1,
 \   },
 \   "g++14" : {
 \       "command" : "g++",
@@ -174,6 +177,44 @@ let g:quickrun_config = {
 \       "cmdopt" : "-std=c++14 -Wall",
 \   },
 \}
+
+
+"Unite.vim
+
+"grep検索
+nnoremap <silent> ,g  : <C-u>Unite grep: -buffer-name=search-buffer<CR>
+"カーソル位置の単語をgrep検索
+nnoremap <silent> ,cg : <C-u>Unite grep: -buffer-name=search-buffer<CR><C-R><C-W>
+"grep検索結果の再呼び出し
+nnoremap <silent> ,r  : <C-u>UniteResume search-buffer<CR>
+"大文字小文字を区別しない
+let g:unite_enable_ignore_case = 1
+let g:unite_enable_smart_case  = 1
+"unite grepにag(The Silver Searcher)を使う
+if executable('ag')
+    let g:unite_source_grep_command = 'ag'
+    let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+    let g:unite_source_grep_recursive_opt = ''
+endif
+"バッファー一覧
+nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
+"ファイル一覧
+nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=file file<CR>
+nnoremap <silent> ,ud :<C-u>Unite file<CR>
+"レジスタ一覧
+nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
+"最近使用したファイル一覧
+nnoremap <silent> ,um :<C-u>Unite file_mru<CR>
+"常用セット
+nnoremap <silent> ,uu :<C-u>Unite buffer file_mru<CR>
+
+
+
+
+
+
+
+
 
 "================
 "Key
