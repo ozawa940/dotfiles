@@ -47,6 +47,8 @@ set autoindent
 set smarttab
 set background=dark
 set clipboard=unnamed,autoselect
+set modifiable
+set write
 "filetype plugin indent on 
 "----------------------------
 "apperance-particularly
@@ -207,10 +209,12 @@ nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
 nnoremap <silent> ,um :<C-u>Unite file_mru<CR>
 "常用セット
 nnoremap <silent> ,uu :<C-u>Unite buffer file_mru<CR>
-
-
-
-
+" ウィンドウを分割して開く
+au FileType unite nnoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
+au FileType unite inoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
+" ウィンドウを縦に分割して開く
+au FileType unite nnoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
+au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
 
 
 
