@@ -18,5 +18,6 @@ alias git_c="git commit -m"
 alias git_p="git push origin master"
 
 alias vivaldi-stable="vivaldi-stable -incognito &"
+alias shutdown="shutdown -h now"
 
 
