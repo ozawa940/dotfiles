@@ -1,4 +1,1 @@
-"Display
-
-set guifont=DejaVu\ Sans\ Mono\ 18
-
+/home/ozawa/.gvimrc
