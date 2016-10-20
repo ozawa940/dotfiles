@@ -21,3 +21,13 @@ alias vivaldi-stable="vivaldi-stable -incognito &"
 alias shutdown="shutdown -h now"
 
 
+
+
+# Paths
+
+
+export XDG_CONFIG_HOME=~/.config
+
+
+
+
