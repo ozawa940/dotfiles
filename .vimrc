@@ -46,7 +46,6 @@ set incsearch
 set autoindent
 set smarttab
 set background=dark
-set clipboard=unnamed,autoselect
 set modifiable
 set write
 "filetype plugin indent on 
