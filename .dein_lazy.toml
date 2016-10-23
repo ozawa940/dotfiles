@@ -1,0 +1,43 @@
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+on_path = '.*'
+
+[[plugins]]
+repo = 'cespare/vim-toml'
+on_ft = 'toml'
+
+[[plugins]]
+repo = 'Shougo/neoyank.vim'
+on_path = '.*'
+
+[[plugins]]
+repo = 'Shougo/neosnippet'
+
+on_i = 1
+on_ft = ['snippet']
+depends = ['neosnippet-snippets']
+
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+hook_add = '''
+    let g:deoplete#enable_at_startup = 1
+    let g:deoplete#enable_smart_case = 1
+    inoremap <silent><expr? <Tab> pumvisible() ? "\<C-n>" : deoplete#mappings#manual_complete()
+    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+
+    function! s:my_cr_function()
+      return pumvisible() ? deoplete#mappings#close_popup() : "\<CR>"
+    endfunction
+'''
+on_i = 1
+[[plugins]]
+repo = 'Shougo/denite.nvim'
+depends = ['neomru.vim']
+hook_add = '''
+    nmap <silent> <C-u><C-f> :<C-u>Denite file_rec<CR>
+    nmap <silent> <C-u><C-l> :<C-u>Denite line<CR>
+    nmap <silent> <C-u><C-g> :<C-u>Denite grep<CR>
+    nmap <silent> <C-u><C-u> :<C-u>Denite file_mru<CR>
+    nmap <silent> <C-u><C-y> :<C-u>Denite neoyank<CR>
+'''
+
