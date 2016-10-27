@@ -37,3 +37,15 @@ hook_add = '''
     endfunction
 '''
 on_i = 1
+
+[[plugins]]
+repo = 'honza/vim-snippets'
+on_i = 1
+
+
+
+
+
+
+
+

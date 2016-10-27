@@ -29,7 +29,7 @@ alias sys_suspend="systemctl suspend"
 
 # nvim
 export XDG_CONFIG_HOME=~/.config
-
+export TERM=xterm-256color
 
 
 # pyenv
