@@ -35,7 +35,7 @@ set fileencodings=utf-8,euc-jp,sjis,iso-2022-jp
 set noswapfile
 set nobackup
 set backspace=indent,eol,start
-"set clipboard=unnamed,autoselect
+set clipboard=unnamed
 set smartcase
 set hlsearch
 set expandtab
