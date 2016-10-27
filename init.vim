@@ -104,7 +104,7 @@ if !isdirectory(s:dein_repo_dir)
     call system('git clone https://github.com/Shougo/dein.vim' . shellescape(s:dein_repo_dir))
 endif
 
-execute 'set runtimepath^=' . s:dein_repo_dir
+execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
 
 if dein#load_state(s:dein_dir)
     let s:toml = '~/dotfiles/.dein.toml'
