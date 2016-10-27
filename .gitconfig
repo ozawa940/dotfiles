@@ -10,3 +10,6 @@
         # 行ごとの差分じゃなくて，単語レベルでの差分を色付きで表示する
     difff = diff --word-diff
 
+[user]
+	email = d.ozawa940@gmail.com
+	name = ozawa

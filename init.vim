@@ -100,11 +100,12 @@ let s:dein_dir = s:cache_home . '/dein'
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
 " dein.vim がなければ github から落としてくる
-if !isdirectory(s:dein_repo_dir)
-    call system('git clone https://github.com/Shougo/dein.vim' . shellescape(s:dein_repo_dir))
+if &runtimepath !~# '/dein.vim'
+    if !isdirectory(s:dein_repo_dir)
+        execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+    endif
+    execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ":p")
 endif
-
-execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
 
 if dein#load_state(s:dein_dir)
     let s:toml = '~/dotfiles/.dein.toml'
