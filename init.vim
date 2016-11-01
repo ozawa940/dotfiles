@@ -87,10 +87,6 @@ endif
 "dein
 "dein use copy command of rsync.
 "----------------
-if &compatible
-    set nocompatible
-endif
-
 augroup MyAutoCmd
     autocmd!
 augroup END

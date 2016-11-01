@@ -16,7 +16,7 @@ fi
 alias git_a="git add -u"
 alias git_c="git commit -a -m"
 alias git_p="git push origin master"
-alias vim="nvim"
+#alias vim="nvim"
 
 alias vivaldi-stable="vivaldi-stable -incognito &"
 alias shutdown="systemctl poweroff"

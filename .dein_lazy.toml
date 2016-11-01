@@ -1,12 +1,5 @@
 [[plugins]]
-repo = 'cespare/vim-toml'
-on_ft = 'toml'
-
-
-
-[[plugins]]
 repo = 'Shougo/neosnippet'
-
 on_i = 1
 on_ft = ['snippet']
 depends = ['neosnippet-snippets']
@@ -44,8 +37,9 @@ on_i = 1
 
 
 
-
-
+[[plugins]]
+repo = 'tpope/vim-surround'
+on_i = 1
 
 
 
