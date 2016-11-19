@@ -225,12 +225,14 @@ au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vspli
 "Key
 "================
 
-"挿入モード時のキー異同
-inoremap <C-h> <Left>
-inoremap <C-j> <Down>
-inoremap <C-k> <Up>
-inoremap <C-l> <Right>
 
+inoremap <A-CR> <C-o>o
+inoremap <A-a> <C-o>^
+inoremap <A-s> <C-o>$
+inoremap <A-z> <C-o>u
+inoremap <A-w> <C-o>w
 
-
-
+imap <A-j> <Down>
+imap <A-h> <Left>
+imap <A-k> <Up>
+imap <A-l> <Right>
