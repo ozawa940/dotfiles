@@ -13,3 +13,6 @@
 [user]
 	email = d.ozawa940@gmail.com
 	name = ozawa
+
+[ghq]
+    root = ~/dev

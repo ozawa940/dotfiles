@@ -49,7 +49,7 @@ set smarttab
 set background=dark
 set modifiable
 set write
-"filetype plugin indent on 
+"filetype plugin indent on
 "----------------------------
 "apperance-particularly
 "----------------------------
@@ -106,7 +106,7 @@ endif
 if dein#load_state(s:dein_dir)
     let s:toml = '~/dotfiles/.dein.toml'
     let s:lazy_toml = '~/dotfiles/.dein_lazy.toml'
-    call dein#begin(expand(s:dein_dir), [$MYVIMRC, s:toml, s:lazy_toml])
+    call dein#begin(expand(s:dein_dir))
     "call dein#begin(expand(s:dein_dir))
     "toml loading
     call dein#load_toml(s:toml, {'lazy' : 0})
@@ -124,21 +124,30 @@ filetype plugin indent on
 syntax on
 
 
-"----------------
-"Plugin-setting
-"---------------
-
-
 "================
 "Key
 "================
-inoremap <A-CR> <C-o>o
-inoremap <A-a> <C-o>^
-inoremap <A-s> <C-o>$
-inoremap <A-z> <C-o>u
-inoremap <A-w> <C-o>w
 
-imap <A-j> <Down>
-imap <A-h> <Left>
-imap <A-k> <Up>
-imap <A-l> <Right>
+"Yを行末までのヤンクにする
+nnoremap Y y$
+"ESCキー連打でハイライトを消す
+nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
+
+"置換の際のgオプションをデフォルトで有効化する
+set gdefault
+"保存時に行末の空白を削除する
+autocmd BufWritePre * :%s/\s\+$//ge
+"変換候補で一度に表示される数を設定する
+set pumheight=10
+"iTerm2やtmux上でもインサートモード時のカーソルの形状を変化させる
+if exists('$TMUX')
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+"CUIでVimを使用した際に生じるEscキーのディレイを解消
+if !has('gui_running')
+    set timeout timeoutlen=1000 ttimeoutlen=50
+endif

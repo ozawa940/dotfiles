@@ -48,7 +48,11 @@ set smarttab
 set background=dark
 set modifiable
 set write
-"filetype plugin indent on 
+"置換の際のgオプションをデフォルトで有効化する
+set gdefault
+"変換候補で一度に表示される数を設定する
+set pumheight=10
+"filetype plugin indent on
 "----------------------------
 "apperance-particularly
 "----------------------------
@@ -61,6 +65,22 @@ if has("autocmd")
     \ endif
 endif
 
+"iTerm2やtmux上でもインサートモード時のカーソルの形状を変化させる
+if exists('$TMUX')
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+
+"CUIでVimを使用した際に生じるEscキーのディレイを解消
+if !has('gui_running')
+    set timeout timeoutlen=1000 ttimeoutlen=50
+endif
+
+"保存時に行末の空白を削除する
+autocmd BufWritePre * :%s/\s\+$//ge
 
 " 全角スペースの表示
 function! ZenkakuSpace()
@@ -80,159 +100,54 @@ endif
 "=========================
 "Plugin
 "========================
-
-
-
 "----------------
 "dein
 "dein use copy command of rsync.
 "----------------
-if &compatible
-    set nocompatible
-endif
+augroup MyAutoCmd
+    autocmd!
+augroup END
 
-
-
-" プラグインが実際にインストールされるディレクトリ
-let s:dein_dir = expand('~/.vim/dein')
-" dein.vim 本体
+let s:cache_home = empty($XDG_CACHE_HOME) ? expand('~/.cache') : $XDG_CACHE_HOME
+let s:dein_dir = s:cache_home . '/dein'
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
 " dein.vim がなければ github から落としてくる
 if &runtimepath !~# '/dein.vim'
-  if !isdirectory(s:dein_repo_dir)
-    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
-  endif
-  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
+    if !isdirectory(s:dein_repo_dir)
+        execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+    endif
+    execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ":p")
 endif
 
+"if dein#load_state(s:dein_dir)
+"endif
 
+let s:toml = '~/dotfiles/dein.toml'
+let s:lazy_toml = '~/dotfiles/dein_lazy.toml'
 call dein#begin(expand(s:dein_dir))
-"you need to make vimproc.
-call dein#add('Shougo/vimproc.vim', {'build': 'make'})
-"noecomplete is lua/dyn, vim version and machine installed lua
-call dein#add('Shougo/neocomplete.vim')
-call dein#add('Shougo/neosnippet')
-call dein#add('Shougo/neosnippet-snippets')
-call dein#add('Shougo/unite.vim')
-call dein#add('Shougo/neomru.vim')
-call dein#add('Shougo/vimshell.vim')
-
-call dein#add('itchyny/lightline.vim')
-"neocomplete and lexima are conflict.
-"call dein#add('cohama/lexima.vim')
-call dein#add('kana/vim-smartinput')
-call dein#add('tomasr/molokai')
-call dein#add('thinca/vim-quickrun')
-call dein#add('tomtom/tcomment_vim')
-"Ruby Plugin
-"call dein#add('bronson/vim-trailing-whitespace')
-
+"toml loading
+call dein#load_toml(s:toml, {'lazy' : 0})
+call dein#load_toml(s:lazy_toml, {'lazy' : 1})
 call dein#end()
+"call dein#save_state()
+
 
 if dein#check_install()
     call dein#install()
 endif
 
 filetype plugin indent on
-colorscheme molokai
 syntax on
-
-
-"----------------
-"Plugin-setting
-"---------------
-
-
-"NeoComplete
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_ignore_case = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#enable_auto_select = 1
-let g:neocomplete#enable_enable_camel_case_completion = 0
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns._ = '\h\w*'
-
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return pumvisible() ? "\<C-y>" : "\<CR>"
-endfunction
-
-"quick-run
-let g:quickrun_config = {
-\   "_" : {
-\       "hoOK/time/enable" : 1,
-\       "outputter/buffer/split" : ":botright",
-\       "hook/output_encode/enable" : 1,
-\       "hook/output_encode/encoding" : "utf-8",
-\       "runner" : "vimproc",
-\       "runner/vimproc/updatetime" : 10,
-\       "outputter/buffer/clone_on_empty" : 1,
-\   },
-\   "g++14" : {
-\       "command" : "g++",
-\       "exec" : ['%c %o %s -o %s:p:r', '%s:p:r %a'],
-\       "cmdopt" : "-std=c++14 -Wall",
-\   },
-\}
-
-
-"Unite.vim
-let g:unite_enable_start_insert = 1
-"grep検索
-nnoremap <silent> ,g  : <C-u>Unite grep: -buffer-name=search-buffer<CR>
-"カーソル位置の単語をgrep検索
-nnoremap <silent> ,cg : <C-u>Unite grep: -buffer-name=search-buffer<CR><C-R><C-W>
-"grep検索結果の再呼び出し
-nnoremap <silent> ,r  : <C-u>UniteResume search-buffer<CR>
-"大文字小文字を区別しない
-let g:unite_enable_ignore_case = 1
-let g:unite_enable_smart_case  = 1
-"unite grepにag(The Silver Searcher)を使う
-if executable('ag')
-    let g:unite_source_grep_command = 'ag'
-    let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
-    let g:unite_source_grep_recursive_opt = ''
-endif
-"バッファー一覧
-nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
-"ファイル一覧
-nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=file file<CR>
-nnoremap <silent> ,ud :<C-u>Unite file<CR>
-"レジスタ一覧
-nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
-"最近使用したファイル一覧
-nnoremap <silent> ,um :<C-u>Unite file_mru<CR>
-"常用セット
-nnoremap <silent> ,uu :<C-u>Unite buffer file_mru<CR>
-" ウィンドウを分割して開く
-au FileType unite nnoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
-au FileType unite inoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
-" ウィンドウを縦に分割して開く
-au FileType unite nnoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
-au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
-
-
-
-
-
-
 
 "================
 "Key
 "================
 
+"Yを行末までのヤンクにする
+nnoremap Y y$
+"ESCキー連打でハイライトを消す
+nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
+"行の途中からでも次の行に新規挿入する
+inoremap <C-o> <C-o>o
 
-inoremap <A-CR> <C-o>o
-inoremap <A-a> <C-o>^
-inoremap <A-s> <C-o>$
-inoremap <A-z> <C-o>u
-inoremap <A-w> <C-o>w
-
-imap <A-j> <Down>
-imap <A-h> <Left>
-imap <A-k> <Up>
-imap <A-l> <Right>

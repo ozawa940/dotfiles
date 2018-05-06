@@ -6,9 +6,6 @@ repo = 'Shougo/vimproc.vim'
 build = 'make'
 
 [[plugins]]
-repo = 'Shougo/neosnippet-snippets'
-
-[[plugins]]
 repo = 'w0ng/vim-hybrid'
 hook_add = '''
     set background=dark
@@ -17,11 +14,6 @@ hook_add = '''
 
 [[plugins]]
 repo = 'itchyny/lightline.vim'
-
-[[plugins]]
-repo = 'jiangmiao/auto-pairs'
-on_i = 1
-
 
 [[plugins]]
 repo = 'Shougo/neomru.vim'
@@ -69,9 +61,6 @@ hook_add = '''
 [[plugins]]
 repo = 'cespare/vim-toml'
 
-
-
-
 [[plugins]]
 repo = 'Shougo/unite.vim'
 on_event = 'BufRead'
@@ -100,16 +89,12 @@ hook_add = '''
     endif
 '''
 
-[[plugins]]
-repo = 'Shougo/vimfiler'
-hook_add = '''
-    let g:vimfiler_safe_mode_by_default = 0
-    nmap <silent> ,vf :<C-u>VimFiler -split -simple -winwidth=25 -no-quit<CR>
-'''
 
 [[plugins]]
-repo = 'thinca/vim-quickrun'
+repo = 'roxma/nvim-yarp'
+if = '''!has('nvim')'''
 
-
-
+[[plugins]]
+repo = 'roxma/vim-hug-neovim-rpc'
+if = '''!has('nvim')'''
 

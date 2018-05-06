@@ -13,15 +13,6 @@ fi
 # Customize to your needs...
 
 # alias
-alias git_a="git add -u"
-alias git_c="git commit -a -m"
-alias git_p="git push origin master"
-alias vim="nvim"
-
-alias vivaldi-stable="vivaldi-stable -incognito &"
-alias shutdown="systemctl poweroff"
-alias sys_suspend="systemctl suspend"
-
 
 
 
@@ -31,12 +22,21 @@ alias sys_suspend="systemctl suspend"
 export XDG_CONFIG_HOME=~/.config
 export TERM=xterm-256color
 
+# GO
 
-# pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+export GOPATH=$HOME/dev
+export PATH=$PATH:$GOPATH/bin
 
+function peco-src () {
+  local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
+  if [ -n "$selected_dir" ]; then
+    BUFFER="cd ${selected_dir}"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+zle -N peco-src
+bindkey '^]' peco-src
 
 
 
