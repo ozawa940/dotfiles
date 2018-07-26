@@ -1,0 +1,7 @@
+# These are usually plugin.
+
+[[plugins]]
+repo = 'cespare/vim-toml'
+on_ft = 'toml'
+
+

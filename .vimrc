@@ -2,7 +2,6 @@
 "appearance
 "=============
 
-
 "---------------------
 "appearance-display
 "---------------------
@@ -120,18 +119,16 @@ if &runtimepath !~# '/dein.vim'
     execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ":p")
 endif
 
-"if dein#load_state(s:dein_dir)
-"endif
-
-let s:toml = '~/dotfiles/dein.toml'
-let s:lazy_toml = '~/dotfiles/dein_lazy.toml'
-call dein#begin(expand(s:dein_dir))
-"toml loading
-call dein#load_toml(s:toml, {'lazy' : 0})
-call dein#load_toml(s:lazy_toml, {'lazy' : 1})
-call dein#end()
-"call dein#save_state()
-
+if dein#load_state(s:dein_dir)
+    let s:toml = '~/dotfiles/dein.toml'
+    let s:lazy_toml = '~/dotfiles/dein_lazy.toml'
+    call dein#begin(expand(s:dein_dir))
+    "toml loading
+    call dein#load_toml(s:toml, {'lazy' : 0})
+    call dein#load_toml(s:lazy_toml, {'lazy' : 1})
+    call dein#end()
+    call dein#save_state()
+endif
 
 if dein#check_install()
     call dein#install()
@@ -151,3 +148,22 @@ nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
 "行の途中からでも次の行に新規挿入する
 inoremap <C-o> <C-o>o
 
+
+"置換の際のgオプションをデフォルトで有効化する
+set gdefault
+"保存時に行末の空白を削除する
+autocmd BufWritePre * :%s/\s\+$//ge
+"変換候補で一度に表示される数を設定する
+set pumheight=10
+"iTerm2やtmux上でもインサートモード時のカーソルの形状を変化させる
+if exists('$TMUX')
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+"CUIでVimを使用した際に生じるEscキーのディレイを解消
+if !has('gui_running')
+    set timeout timeoutlen=1000 ttimeoutlen=50
+endif

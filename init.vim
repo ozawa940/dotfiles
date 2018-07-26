@@ -49,7 +49,6 @@ set smarttab
 set background=dark
 set modifiable
 set write
-"filetype plugin indent on
 "----------------------------
 "apperance-particularly
 "----------------------------
@@ -81,6 +80,9 @@ endif
 "Plugin
 "========================
 
+if executable('pyenv')
+    let g:python3_host_prog = expand($PYENV_ROOT . '/versions/3.7.0/bin/python')
+endif
 
 
 "----------------
@@ -104,15 +106,15 @@ if &runtimepath !~# '/dein.vim'
 endif
 
 if dein#load_state(s:dein_dir)
-    let s:toml = '~/dotfiles/.dein.toml'
-    let s:lazy_toml = '~/dotfiles/.dein_lazy.toml'
+    let s:toml = '~/dotfiles/dein.toml'
+    let s:lazy_toml = '~/dotfiles/dein_lazy.toml'
+    let s:opt_toml = '~/dotfiles/dein_opt.toml'
     call dein#begin(expand(s:dein_dir))
-    "call dein#begin(expand(s:dein_dir))
     "toml loading
     call dein#load_toml(s:toml, {'lazy' : 0})
     call dein#load_toml(s:lazy_toml, {'lazy' : 1})
+    call dein#load_toml(s:opt_toml, {'lazy' : 1})
     call dein#end()
-    call dein#save_state()
 endif
 
 
@@ -132,6 +134,9 @@ syntax on
 nnoremap Y y$
 "ESCキー連打でハイライトを消す
 nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
+
+"行の途中からでも次の行に新規挿入する
+inoremap <C-o> <C-o>o
 
 "置換の際のgオプションをデフォルトで有効化する
 set gdefault
